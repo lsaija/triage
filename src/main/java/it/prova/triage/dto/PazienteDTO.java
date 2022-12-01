@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -25,12 +26,23 @@ public class PazienteDTO {
 
 	@NotBlank(message = "{codiceFiscale.notblank}")
 	private String codiceFiscale;
+	@NotNull(message = "{dataRegistrazione.notnull}")
 	private LocalDateTime dataRegistrazione;
 	private StatoPaziente statoPaziente;
 	private String codiceDottore;
 
 	public PazienteDTO() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public PazienteDTO(String codiceFiscale) {
+		super();
+		this.codiceFiscale = codiceFiscale;
+	}
+
+	public PazienteDTO(Long id) {
+		super();
+		this.id = id;
 	}
 
 	public PazienteDTO(Long id, String nome, String cognome, String codiceFiscale, LocalDateTime dataRegistrazione,
