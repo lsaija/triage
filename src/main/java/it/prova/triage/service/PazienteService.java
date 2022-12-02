@@ -18,5 +18,11 @@ public interface PazienteService {
 	Paziente findByCodiceFiscale(String codiceFiscaleInstance);
 
 	Paziente findByCodiceDottore(String codiceDottoreInstance);
+	
+	public void ricovera(Long id);
+	
+	public void impostaCodiceDottore(String codiceFiscaleInstance, String codiceDottoreInstance);
+	
+	public void dimetti(Long id);
 
 }

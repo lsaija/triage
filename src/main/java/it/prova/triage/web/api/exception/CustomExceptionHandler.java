@@ -58,4 +58,52 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
+	@ExceptionHandler(PazienteNotFoundException.class)
+	public ResponseEntity<Object> handlePazienteNotFoundExceptionException(PazienteNotFoundException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(IdNullUpdateException.class)
+	public ResponseEntity<Object> handleIdNullUpdateException(IdNullUpdateException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(PazienteNonDimessoException.class)
+	public ResponseEntity<Object> handlePazienteNonDimessoException(PazienteNonDimessoException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(PazienteNotInVisitaException.class)
+	public ResponseEntity<Object> handlePazienteNotInVisitaException(PazienteNotInVisitaException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
 }

@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.triage.model.Paziente;
+import it.prova.triage.model.StatoPaziente;
 import it.prova.triage.repository.PazienteRepository;
+import it.prova.triage.web.api.exception.PazienteNotFoundException;
+import it.prova.triage.web.api.exception.PazienteNotInVisitaException;
 
 @Service
 @Transactional
@@ -35,8 +38,10 @@ public class PazienteServiceImpl implements PazienteService {
 	@Override
 	public Paziente inserisciNuovo(Paziente pazienteInstance) {
 		pazienteInstance.setDataRegistrazione(LocalDateTime.now());
+		pazienteInstance.setStatoPaziente(StatoPaziente.IN_ATTESA_VISITA);
 		return repository.save(pazienteInstance);
 	}
+
 
 	@Override
 	public void rimuovi(Long idToRemove) {
@@ -45,7 +50,7 @@ public class PazienteServiceImpl implements PazienteService {
 
 	@Override
 	public Paziente findByCodiceFiscale(String codiceFiscaleInstance) {
-		return repository.findByCodiceFiscale(codiceFiscaleInstance);
+		return repository.findByCodiceFiscale(codiceFiscaleInstance).orElse(null);
 	}
 
 	@Override
@@ -53,5 +58,49 @@ public class PazienteServiceImpl implements PazienteService {
 		return repository.findPazienteByCodiceDottore(codiceDottoreInstance);
 
 	}
+	
+	@Override
+	public void ricovera(Long id) {
+		Paziente result = repository.findById(id).orElse(null);
+		
+		if(result == null)
+			throw new PazienteNotFoundException("paziente non trovato");
+		
+		if(!result.getStatoPaziente().equals(StatoPaziente.IN_VISITA))
+			throw new PazienteNotInVisitaException("Paziente non in visita");
+		
+		result.setStatoPaziente(StatoPaziente.RICOVERATO);
+		result.setCodiceDottore(null);
+		
+		repository.save(result);
+	}
+
+	@Override
+	public void impostaCodiceDottore(String cf, String cd) {
+		Paziente result = repository.findByCodiceFiscale(cf).orElse(null);
+		
+		if(result == null)
+			throw new PazienteNotFoundException("paziente non trovato");
+		
+		result.setCodiceDottore(cd);
+		repository.save(result);
+	}
+
+	@Override
+	public void dimetti(Long id) {
+		Paziente result = repository.findById(id).orElse(null);
+		
+		if(result == null)
+			throw new PazienteNotFoundException("paziente non trovato");
+		
+		if(!result.getStatoPaziente().equals(StatoPaziente.IN_VISITA))
+			throw new PazienteNotInVisitaException("Paziente non in visita");
+		
+		result.setStatoPaziente(StatoPaziente.DIMESSO);
+		result.setCodiceDottore(null);
+		
+		repository.save(result);
+	}
+
 
 }

@@ -1,29 +1,22 @@
 package it.prova.triage.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class DottoriRequestDTO {
+public class DottoreResponseDTO {
 	private String nome;
 	private String cognome;
-	private String codiceDottore;
+	private String codFiscalePazienteAttualmenteInVisita;
 	private boolean inVisita;
 	private boolean inServizio;
-
-	public DottoriRequestDTO() {
+	
+	public DottoreResponseDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public DottoriRequestDTO(String codiceDottore) {
-		super();
-		this.codiceDottore = codiceDottore;
-	}
-
-	public DottoriRequestDTO(String nome, String cognome, String codiceDottore, boolean inVisita, boolean inServizio) {
+	public DottoreResponseDTO(String nome, String cognome, String codFiscalePazienteAttualmenteInVisita,
+			boolean inVisita, boolean inServizio) {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
-		this.codiceDottore = codiceDottore;
+		this.codFiscalePazienteAttualmenteInVisita = codFiscalePazienteAttualmenteInVisita;
 		this.inVisita = inVisita;
 		this.inServizio = inServizio;
 	}
@@ -44,12 +37,12 @@ public class DottoriRequestDTO {
 		this.cognome = cognome;
 	}
 
-	public String getCodiceDottore() {
-		return codiceDottore;
+	public String getCodFiscalePazienteAttualmenteInVisita() {
+		return codFiscalePazienteAttualmenteInVisita;
 	}
 
-	public void setCodiceDottore(String codiceDottore) {
-		this.codiceDottore = codiceDottore;
+	public void setCodFiscalePazienteAttualmenteInVisita(String codFiscalePazienteAttualmenteInVisita) {
+		this.codFiscalePazienteAttualmenteInVisita = codFiscalePazienteAttualmenteInVisita;
 	}
 
 	public boolean isInVisita() {
@@ -67,5 +60,6 @@ public class DottoriRequestDTO {
 	public void setInServizio(boolean inServizio) {
 		this.inServizio = inServizio;
 	}
-
+	
+	
 }
