@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import it.prova.triage.dto.DottorePazienteRequestDTO;
 import it.prova.triage.dto.DottorePazienteResponseDTO;
 import it.prova.triage.dto.DottoreResponseDTO;
+import it.prova.triage.service.PazienteService;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -24,6 +25,8 @@ public class AssegnaPazienteDottoreController {
 
 	@Autowired
 	private WebClient webClient;
+	@Autowired
+	private PazienteService pazienteService;
 
 	@GetMapping("/{cd}")
 	public DottoreResponseDTO verificaDisponibilitaDottore(@PathVariable(required = true) String cd) {
@@ -40,7 +43,8 @@ public class AssegnaPazienteDottoreController {
 
 	@PostMapping("/impostaVisita")
 	public DottorePazienteResponseDTO impostaVisita(@RequestBody DottorePazienteRequestDTO dottore) {
-
+		pazienteService.impostaCodiceDottore(dottore.getCodFiscalePazienteAttualmenteInVisita(),
+				dottore.getCodiceDottore());
 		LOGGER.info(".........invocazione servizio esterno............");
 
 		ResponseEntity<DottorePazienteResponseDTO> response = webClient.post().uri("/impostaVisita")

@@ -83,6 +83,7 @@ public class PazienteServiceImpl implements PazienteService {
 			throw new PazienteNotFoundException("paziente non trovato");
 		
 		result.setCodiceDottore(cd);
+		result.setStatoPaziente(StatoPaziente.IN_VISITA);
 		repository.save(result);
 	}
 
