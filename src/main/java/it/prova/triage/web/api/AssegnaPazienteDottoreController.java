@@ -3,6 +3,7 @@ package it.prova.triage.web.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import it.prova.triage.dto.DottorePazienteRequestDTO;
 import it.prova.triage.dto.DottorePazienteResponseDTO;
 import it.prova.triage.dto.DottoreResponseDTO;
 import it.prova.triage.service.PazienteService;
+import it.prova.triage.web.api.exception.DottoreNonDisponibileException;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -34,7 +36,9 @@ public class AssegnaPazienteDottoreController {
 		LOGGER.info(".........invocazione servizio esterno............");
 
 		DottoreResponseDTO dottoreResponseDTO = webClient.get().uri("/verificaDisponibilitaDottore/" + cd).retrieve()
-				.bodyToMono(DottoreResponseDTO.class).block();
+				.onStatus(HttpStatus::is4xxClientError, response -> {
+					throw new DottoreNonDisponibileException("dottore non disponibile");
+				}).bodyToMono(DottoreResponseDTO.class).block();
 
 		LOGGER.info(".........invocazione servizio esterno completata............");
 
